@@ -90,9 +90,9 @@ enum PHY_LEDS_OP {
 
 /* Supported devices */
 struct bdx_device_descr {
-	short vid;
-	short pid;
-	short subdev;
+	__u16 vid;
+	__u16 pid;
+	__u16 subdev;
 	enum PHY_TYPE phy_type;
 	char *name;
 };
