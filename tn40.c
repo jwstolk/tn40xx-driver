@@ -434,16 +434,18 @@ static enum PHY_TYPE bdx_phy_init(struct bdx_priv *priv)
 	    bdx_get_phy_by_id(pdev->vendor, pdev->device,
 			      pdev->subsystem_device);
 
-	if (phy_type == PHY_TYPE_NA)
+	if (phy_type == PHY_TYPE_NA){
+		dev_info(&priv->pdev->dev, "No PHY for subsystem_device [%4x:%4x:%4x]\n", pdev->vendor, pdev->device, pdev->subsystem_device);
 		return PHY_TYPE_NA;	/* NIC definition has no PHY. */
-
+    }
 	bdx_mdio_set_speed(priv->pBdxRegs, MDIO_SPEED_1MHZ);
 
 	phy_id = bdx_mdio_scan_phy_id(priv);	/* set phy_mdio_port */
 
-	if (!priv->phy_mdio_port)
+	if (!priv->phy_mdio_port){
+		dev_info(&priv->pdev->dev, "No PHY on MDIO bus\n");
 		return PHY_TYPE_NA;	/* No PHY detected on MDIO bus. */
-
+    }
 	/* register the PHY-specific callbacks */
 	priv->phy_type = bdx_phy_register(priv, phy_id, &desc);
 
@@ -2857,7 +2859,7 @@ static int bdx_get_phy_by_id(int vendor, int device, int subsystem)
 		    )
 			return bdx_dev_tbl[i].phy_type;
 	}
-	return 0;
+	return PHY_TYPE_NA;
 }
 
 static void __init bdx_init_net_device(struct net_device *ndev,
