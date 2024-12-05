@@ -1,4 +1,12 @@
 
+
+NOTE:
+This is a fork from: https://github.com/acooks/tn40xx-driver I hope to send my changes to the original.
+This is a fork of only the default "develop" branch. The original contains more branches, including original releases by the manufacturer.
+
+I own only a Edimax EN-9320SFP+ and have only tested with this card.
+
+
 This repo contains the tn40xx Linux driver for 10Gbit NICs based on the TN4010 MAC from the (now defunct) Tehuti Networks.
 
 This driver enables the following 10Gb SFP+ NICs:
