@@ -133,7 +133,7 @@ static void bdx_rx_free_pages(struct bdx_priv *priv);
 static int bdx_suspend(struct device *dev);
 static int bdx_resume(struct device *dev);
 
-static int bdx_get_phy_by_id(int vendor, int device, int subsystem);
+static enum PHY_TYPE bdx_get_phy_by_id(int vendor, int device, int subsystem);
 
 /*#define USE_RSS */
 #if defined(USE_RSS)
@@ -437,7 +437,7 @@ static enum PHY_TYPE bdx_phy_init(struct bdx_priv *priv)
 	if (phy_type == PHY_TYPE_NA){
 		dev_info(&priv->pdev->dev, "No PHY for subsystem_device [%4x:%4x:%4x]\n", pdev->vendor, pdev->device, pdev->subsystem_device);
 		return PHY_TYPE_NA;	/* NIC definition has no PHY. */
-    }
+	}
 	bdx_mdio_set_speed(priv->pBdxRegs, MDIO_SPEED_1MHZ);
 
 	phy_id = bdx_mdio_scan_phy_id(priv);	/* set phy_mdio_port */
@@ -445,7 +445,7 @@ static enum PHY_TYPE bdx_phy_init(struct bdx_priv *priv)
 	if (!priv->phy_mdio_port){
 		dev_info(&priv->pdev->dev, "No PHY on MDIO bus\n");
 		return PHY_TYPE_NA;	/* No PHY detected on MDIO bus. */
-    }
+	}
 	/* register the PHY-specific callbacks */
 	priv->phy_type = bdx_phy_register(priv, phy_id, &desc);
 
@@ -2849,7 +2849,7 @@ static const struct net_device_ops bdx_netdev_ops = {
 	.ndo_vlan_rx_kill_vid = bdx_vlan_rx_kill_vid,
 };
 
-static int bdx_get_phy_by_id(int vendor, int device, int subsystem)
+static enum PHY_TYPE bdx_get_phy_by_id(int vendor, int device, int subsystem)
 {
 	int i = 0;
 	for (; bdx_dev_tbl[i].vid; i++) {
